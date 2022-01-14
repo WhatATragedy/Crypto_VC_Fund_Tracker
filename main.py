@@ -3,6 +3,7 @@ Point of this is to find the investments made by the big Crypto Firms and see if
 This is a program to Scrape that and put it all in one place.
 """
 import json
+import datetime
 
 import requests
 from bs4 import BeautifulSoup
@@ -195,10 +196,15 @@ class CryptoPortfolioScraper():
             project_website = div.find("a", href=True)
             name = div.find("h6")
             if name and project_website:
-                assets.append({
-                    "name": name.text,       
-                    "website": project_website['href']
-                }) 
+                print(f"{name.text}:{project_website}")
+                if name.text not in [asset.get("name") for asset in assets]:
+                    assets.append({
+                        "name": name.text,       
+                        "website": project_website['href']
+                    }) 
+                else:
+                    print("Found Duplicate Entry")
+        print(assets[0:50])
         return assets
 
     def scrape_boostvc(self, fund_site):
@@ -412,8 +418,20 @@ class CryptoPortfolioScraper():
                         "website": asset.get("website"),
                         "funds": [fund]
                     })                  
-        return merged_assets       
+        return merged_assets  
 
+    @staticmethod
+    def flatten_investments(fuzzed_data):
+        all_assets_and_funds = []
+        for asset_name, asset_data in fuzzed_data.items():
+            for fund in asset_data.get("funds"):
+                all_assets_and_funds.append({
+                    "fund": fund,
+                    "asset_name": asset_name,
+                    "asset_website": asset_data.get("website"),
+                    "date": datetime.datetime.now()
+                })
+        return all_assets_and_funds
 
 if __name__ == "__main__":
     cps = CryptoPortfolioScraper()
@@ -423,8 +441,13 @@ if __name__ == "__main__":
     
     fuzz = cps.fuzzy_matching_assets()
     for asset_name, asset_data in fuzz.items():
+        print(f"{asset_name}: {asset_data}")
         if len(asset_data.get("funds")) >= 4:
             print(f"{asset_name} has {len(asset_data.get('funds'))} invested.. {asset_data.get('funds')}")
+    flattened = cps.flatten_investments(fuzz)
+    with open("assets_fuzzed.json", "w") as assets_all:
+        json.dump(flattened, assets_all, indent=4, default=str)
+    
 
     # cps.scrape_coinbase("https://www.coinbase.com/ventures")
     # cps.scrape_binance("Binance", "https://labs.binance.com/")
