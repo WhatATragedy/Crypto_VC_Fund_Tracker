@@ -17,9 +17,9 @@ optional arguments:
 The output will then tell you the funds and coins at the end.
 
 
-+-----------+----------------------------------------------------------------------------------------------------------------+
+
 |  Project  |                                                     Funds                                                      |
-+-----------+----------------------------------------------------------------------------------------------------------------+
+|-----------|----------------------------------------------------------------------------------------------------------------|
 | arweave   |  ['MultiCoin', 'Coinbase', 'a16z', 'Arrington XRP Capital', 'Blockchain Capital']                              |
 | keep      |  ['MultiCoin', 'Coinbase', 'a16z', 'Fabric Ventures']                                                          |
 | nervos    |  ['MultiCoin', '1Confirmation', 'Blockchain Capital', 'Dragonfly Capital']                                     |
@@ -32,5 +32,6 @@ The output will then tell you the funds and coins at the end.
 | Forta     |  ['Coinbase', '1Confirmation', 'a16z', 'Placeholder Ventures']                                                 |
 | Polkadot  |  ['1Confirmation', 'Arrington XRP Capital', 'Fabric Ventures', 'Placeholder Ventures', 'Three Arrows Capital'] |
 | Coinbase  |  ['1Confirmation', 'Blockchain Capital', 'Digital Currency Group', 'Fabric Ventures']                          |
-+-----------+----------------------------------------------------------------------------------------------------------------+
+
+
 
