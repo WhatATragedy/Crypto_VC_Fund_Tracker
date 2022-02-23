@@ -4,6 +4,7 @@ This is a program to Scrape that and put it all in one place.
 """
 import json
 import datetime
+import argparse
 
 import requests
 from bs4 import BeautifulSoup
@@ -43,7 +44,7 @@ class CryptoPortfolioScraper():
             if not len(fund) == 3:
                 print(f"Issue with the Funds set values. Skipping {fund[0]}")
                 continue
-            print(fund)
+            print(f"Currently Scraping {fund[0]}")
             fund_portfolio = fund[2](fund[1])
             crypto_portfolio[fund[0]] = fund_portfolio
         for key in crypto_portfolio:
@@ -74,15 +75,15 @@ class CryptoPortfolioScraper():
         divs = soup.find_all("div", {"class": "m__list-items m__list-items--small"})
         for div in divs:
             h4 = div.find("h4", {"class": "a__lh_36"})
-            print(h4.text)
+            # print(h4.text)
             if h4:
                 if h4.text == "Selected Companies":
                     ## Got the Div we want, now enumerate
-                    print("Found the write Div!")
+                    # print("Found the right Div!")
                     items = div.find_all("div", {"class": "m__list-items__list-item"})
-                    print(items)
+                    # print(items)
                     for item in items:
-                        print(item)
+                        # print(item)
                         project_website = item.find("a")
                         if project_website:
                             assets.append({
@@ -111,9 +112,9 @@ class CryptoPortfolioScraper():
         r = self._cloud_scraper.get(fund_site)
         soup = BeautifulSoup(r.text, features="html.parser")
         divs = soup.select('div.sc-bdvvtL.sc-gsDKAQ.izDKYq.hIxhWw') # this div has multiple classes so there are spaces so we have to use select here
-        print(divs)
+        # print(divs)
         for div in divs:
-            print(div)
+            # print(div)
             project_name = div.find("a")
             if project_name:
                 assets.append({
@@ -140,10 +141,10 @@ class CryptoPortfolioScraper():
         assets = list()
         r = self._cloud_scraper.get(fund_site)
         soup = BeautifulSoup(r.text, features="html.parser")
-        print(r.text)
+        # print(r.text)
         divs = soup.find_all("div", {"class": "cell large-4 post-item"})
         for div in divs:
-            print(div)
+            # print(div)
             project_website = div.find("img")
             if project_website:
                 parsed_url = tldextract.extract(project_website['src'])
@@ -196,15 +197,16 @@ class CryptoPortfolioScraper():
             project_website = div.find("a", href=True)
             name = div.find("h6")
             if name and project_website:
-                print(f"{name.text}:{project_website}")
+                # print(f"{name.text}:{project_website}")
                 if name.text not in [asset.get("name") for asset in assets]:
                     assets.append({
                         "name": name.text,       
                         "website": project_website['href']
                     }) 
                 else:
-                    print("Found Duplicate Entry")
-        print(assets[0:50])
+                    continue
+                    # print("Found Duplicate Entry")
+        # print(assets[0:50])
         return assets
 
     def scrape_boostvc(self, fund_site):
@@ -212,7 +214,7 @@ class CryptoPortfolioScraper():
         r = self._cloud_scraper.get(fund_site)
         soup = BeautifulSoup(r.text, features="html.parser")
         divs = soup.select('div[data-block-json*="Crypto"]')
-        print(divs)
+        # print(divs)
         # unordered_list = soup.find("ul", {"class": "filter-content"})
         # list_items = unordered_list.find_all("li")
         # for list_item in list_items:
@@ -247,10 +249,10 @@ class CryptoPortfolioScraper():
         assets = list()
         r = self._cloud_scraper.get(fund_site)
         soup = BeautifulSoup(r.text, features="html.parser")
-        table_rows = soup.find_all("td")
-        for table_row in table_rows:
-            project_website = table_row.find("a", href=True)
-            name = table_row.find("strong")
+        divs = soup.find_all("div", {"class": "modal"})
+        for div in divs:
+            project_website = div.find("a", {"class": "portfolio-website"}, href=True)
+            name = div.find("h2")
             if project_website:
                 if "arringtonxrpcapital" in project_website['href']:
                     project_website = None
@@ -259,6 +261,7 @@ class CryptoPortfolioScraper():
                     "name": name.text,
                     "website": project_website['href'] if project_website else None
                 }) 
+        # print(assets)
         return assets
 
     def scrape_a16z(self, fund_site):
@@ -332,11 +335,13 @@ class CryptoPortfolioScraper():
         # with open("coinbase.txt", "w") as tmp:
         #     tmp.write(r.text)
         soup = BeautifulSoup(r.text, features="html.parser")
-        a_tags = soup.find_all("a", {"class": "LogoCard__Link-m4u6vn-0 bIsJm"})
+        a_tags = soup.find_all("a", {"class": "LogoCard__Link-m4u6vn-0 bIsJm"}, href=True)
         for a_tag in a_tags:
+            # print(a_tag)
             div = a_tag.find("div", {"class": "cds-flex-fytym9g cds-column-cygaqsr"})
             header = div.find("h3")
             info = div.find("p")
+            # print(div)
             if header and info:
                 # We got an asset probably so return it 
                 assets.append({
@@ -354,6 +359,9 @@ class CryptoPortfolioScraper():
 
     @staticmethod
     def website_is_a_match(asset1, asset2):
+        # print(f"Comparing {asset1} and {asset2}")
+        if not isinstance(asset1, str) or not isinstance(asset2, str):
+            return False
         asset1_site = tldextract.extract(asset1.get("website"))
         asset2_site = tldextract.extract(asset2.get("website"))
         return asset1_site.domain == asset2_site.domain and asset1_site.suffix == asset2_site.suffix
@@ -434,19 +442,26 @@ class CryptoPortfolioScraper():
         return all_assets_and_funds
 
 if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description='Track Fund Investments for different Crypto Projects')
+    parser.add_argument('--filter', action="store",
+                        help='This can be used to filter out the amount of funds invested into a project to display it, defualt 2', required=False, default=2, type=int)
+    parser.add_argument('--output', action="store_true",
+                        help='Will Output a JSON Object of Funds and their investments', required=False)
+    args = parser.parse_args()
+
     cps = CryptoPortfolioScraper()
     assets = cps.run()
-    with open("assets.json", "w") as assets_all:
-        json.dump(assets, assets_all, indent=4)
-    
     fuzz = cps.fuzzy_matching_assets()
+    
     for asset_name, asset_data in fuzz.items():
-        print(f"{asset_name}: {asset_data}")
-        if len(asset_data.get("funds")) >= 4:
+        # print(f"{asset_name}: {asset_data}")
+        ## This is checking if the coins has more than 4 investments then print it
+        if len(asset_data.get("funds")) >= args.filter:
             print(f"{asset_name} has {len(asset_data.get('funds'))} invested.. {asset_data.get('funds')}")
     flattened = cps.flatten_investments(fuzz)
-    with open("assets_fuzzed.json", "w") as assets_all:
-        json.dump(flattened, assets_all, indent=4, default=str)
+    if args.output:
+        with open("assets_fuzzed.json", "w") as assets_all:
+            json.dump(flattened, assets_all, indent=4, default=str)
     
 
     # cps.scrape_coinbase("https://www.coinbase.com/ventures")
