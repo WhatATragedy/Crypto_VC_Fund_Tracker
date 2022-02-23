@@ -16,15 +16,21 @@ optional arguments:
 
 The output will then tell you the funds and coins at the end.
 
-arweave has 5 invested.. ['MultiCoin', 'Coinbase', 'a16z', 'Arrington XRP Capital', 'Blockchain Capital']
-keep has 4 invested.. ['MultiCoin', 'Coinbase', 'a16z', 'Fabric Ventures']
-nervos has 4 invested.. ['MultiCoin', '1Confirmation', 'Blockchain Capital', 'Dragonfly Capital']
-1inch has 4 invested.. ['Binance', 'Blockchain Capital', 'Dragonfly Capital', 'Fabric Ventures']
-oasislabs has 4 invested.. ['Binance', 'a16z', 'Blockchain Capital', 'Dragonfly Capital']
-Staked has 4 invested.. ['Coinbase', 'Digital Currency Group', 'Fabric Ventures', 'Winklevoss Capital']
-Messari has 4 invested.. ['Coinbase', 'Blockchain Capital', 'Fabric Ventures', 'Winklevoss Capital']
-Orca has 4 invested.. ['Coinbase', 'Arrington XRP Capital', 'Placeholder Ventures', 'Three Arrows Capital']
-Hashflow has 4 invested.. ['Coinbase', 'Arrington XRP Capital', 'Digital Currency Group', 'Fabric Ventures']
-Forta has 4 invested.. ['Coinbase', '1Confirmation', 'a16z', 'Placeholder Ventures']
-Polkadot has 5 invested.. ['1Confirmation', 'Arrington XRP Capital', 'Fabric Ventures', 'Placeholder Ventures', 'Three Arrows Capital']
-Coinbase has 4 invested.. ['1Confirmation', 'Blockchain Capital', 'Digital Currency Group', 'Fabric Ventures']
+
++-----------+----------------------------------------------------------------------------------------------------------------+
+|  Project  |                                                     Funds                                                      |
++-----------+----------------------------------------------------------------------------------------------------------------+
+| arweave   |  ['MultiCoin', 'Coinbase', 'a16z', 'Arrington XRP Capital', 'Blockchain Capital']                              |
+| keep      |  ['MultiCoin', 'Coinbase', 'a16z', 'Fabric Ventures']                                                          |
+| nervos    |  ['MultiCoin', '1Confirmation', 'Blockchain Capital', 'Dragonfly Capital']                                     |
+| 1inch     |  ['Binance', 'Blockchain Capital', 'Dragonfly Capital', 'Fabric Ventures']                                     |
+| oasislabs |  ['Binance', 'a16z', 'Blockchain Capital', 'Dragonfly Capital']                                                |
+| Staked    |  ['Coinbase', 'Digital Currency Group', 'Fabric Ventures', 'Winklevoss Capital']                               |
+| Messari   |  ['Coinbase', 'Blockchain Capital', 'Fabric Ventures', 'Winklevoss Capital']                                   |
+| Orca      |  ['Coinbase', 'Arrington XRP Capital', 'Placeholder Ventures', 'Three Arrows Capital']                         |
+| Hashflow  |  ['Coinbase', 'Arrington XRP Capital', 'Digital Currency Group', 'Fabric Ventures']                            |
+| Forta     |  ['Coinbase', '1Confirmation', 'a16z', 'Placeholder Ventures']                                                 |
+| Polkadot  |  ['1Confirmation', 'Arrington XRP Capital', 'Fabric Ventures', 'Placeholder Ventures', 'Three Arrows Capital'] |
+| Coinbase  |  ['1Confirmation', 'Blockchain Capital', 'Digital Currency Group', 'Fabric Ventures']                          |
++-----------+----------------------------------------------------------------------------------------------------------------+
+
